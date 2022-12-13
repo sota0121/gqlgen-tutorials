@@ -7,13 +7,24 @@ package graph
 import (
 	"context"
 	"fmt"
+	"math/rand"
 
 	"github.com/sota0121/gqlgen-todos/graph/model"
 )
 
 // CreateTodo is the resolver for the createTodo field.
 func (r *mutationResolver) CreateTodo(ctx context.Context, input model.NewTodo) (*model.Todo, error) {
-	panic(fmt.Errorf("not implemented: CreateTodo - createTodo"))
+	todo := &model.Todo{
+		ID:   fmt.Sprintf("T%d", rand.Int()),
+		Text: input.Text,
+		Done: false,
+		User: &model.User{
+			ID:   input.UserID,
+			Name: "user " + input.UserID,
+		},
+	}
+	r.todos = append(r.todos, todo)
+	return todo, nil
 }
 
 // Todos is the resolver for the todos field.
